@@ -1,0 +1,11 @@
+class Solution(object):
+    def climbStairs(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        climb_list = [0] * (n+1)
+        climb_list[0] = climb_list[1] = 1
+        for i in range(2, n+1): 
+            climb_list[i] = climb_list[i-1] + climb_list[i-2]
+        return climb_list[n]
