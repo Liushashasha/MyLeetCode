@@ -1,0 +1,16 @@
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        for i in nums:
+            j = target - i # a+b=target
+            first_index = nums.index(i)
+            next_index = first_index + 1
+            # 建立一个新数组
+            temp_nums = nums[next_index: ]
+            if j in temp_nums:
+                second_index = next_index + temp_nums.index(j)
+                return [first_index, second_index]
