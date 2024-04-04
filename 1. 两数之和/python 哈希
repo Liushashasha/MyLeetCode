@@ -1,0 +1,18 @@
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+
+        dict = {}
+
+        for i in range(len(nums)):
+            if target - nums[i] not in dict:
+                dict[nums[i]] = i
+            # 检索能与当前元素匹配的i元素，是否已被记入字典中，
+            # 若没有则将该元素名作为键，在数组中位置（数组下标）作为值
+            else:
+                return [dict[target-nums[i]],i]
+            # 若已记入字典中，则直接输出匹配的两个整数的数组下标
