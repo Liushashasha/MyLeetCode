@@ -12,7 +12,8 @@ class Solution(object):
             if target - nums[i] not in dict:
                 dict[nums[i]] = i
             # 检索能与当前元素匹配的i元素，是否已被记入字典中，
-            # 若没有则将该元素名作为键，在数组中位置（数组下标）作为值
+            # 如果不存在，将当前元素的值作为键，索引 i 作为值存入哈希表
             else:
                 return [dict[target-nums[i]],i]
-            # 若已记入字典中，则直接输出匹配的两个整数的数组下标
+            # 如果存在，意味着已经找到了一个与当前元素相加等于 target 
+            # 的配对元素，返回这两个元素的索引
