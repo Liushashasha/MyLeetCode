@@ -1,0 +1,17 @@
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def checkTree(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: bool
+        """
+        if not root:
+            return False  # 如果根节点不存在，返回False
+        left_val = root.left.val if root.left else 0  # 如果左子节点存在，则获取其值，否则为0
+        right_val = root.right.val if root.right else 0  # 如果右子节点存在，则获取其值，否则为0
+        return root.val == left_val + right_val  # 检查根节点的值是否等于左右子节点值的和
