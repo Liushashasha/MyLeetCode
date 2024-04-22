@@ -1,0 +1,55 @@
+def error_logger(records):
+    import re
+    from collections import OrderedDict
+    
+    # 创建一个有序字典来维护错误记录的顺序，并且统计每个错误的出现次数
+    error_count = OrderedDict()
+    
+    # 创建一个字典来记录每个错误首次出现的位置（索引）
+    order_dict = {}
+
+    # 循环处理每条记录，enumerate提供索引index和记录内容record
+    for index, record in enumerate(records):
+        # 从每条记录的末尾分割出行号，假设行号前总是有一个空格
+        path, line_number = record.rsplit(' ', 1)
+        # 从文件路径中提取文件名，假设路径使用反斜杠\作为分隔符
+        file_name = path.split('\\')[-1] 
+
+        # 使用正则表达式删除文件名中的不可打印字符
+        file_name = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', file_name)
+
+        # 如果文件名超过16个字符，只保留最后的16个字符
+        if len(file_name) > 16:
+            file_name = file_name[-16:]
+
+        # 将清理后的文件名与行号组合成一个新的键
+        key = f"{file_name} {line_number}"
+        
+        # 检查这个键是否已经存在于错误计数字典中
+        if key in error_count:
+            # 如果存在，增加其计数
+            error_count[key] += 1
+        else:
+            # 如果不存在，初始化计数为1，并记录其首次出现的位置
+            error_count[key] = 1
+            order_dict[key] = index
+
+    # 将错误计数字典转换成列表并按照错误出现的次数降序排序
+    # 如果次数相同，按照错误首次出现的位置升序排序
+    sorted_errors = sorted(error_count.items(), key=lambda x: (-x[1], order_dict[x[0]]))
+
+    # 从排序后的错误列表中取前8条记录，并格式化输出
+    return [f"{k} {v}" for k, v in sorted_errors[:8]]
+
+
+def main():
+    import sys
+    input = sys.stdin.read
+    data = input().strip().split('\n')
+    
+    output = error_logger(data)
+    for line in output:
+        print(line)
+
+if __name__ == "__main__":
+    main()
