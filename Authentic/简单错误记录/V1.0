@@ -1,3 +1,4 @@
+
 def error_logger(records):
     import re
     from collections import OrderedDict
@@ -46,7 +47,8 @@ def main():
     import sys
     input = sys.stdin.read
     data = input().strip().split('\n')
-    
+    # 不确定有多少行输入，将多行输入分割为一个列表，每一项为一行
+
     output = error_logger(data)
     for line in output:
         print(line)
