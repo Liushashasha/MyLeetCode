@@ -1,0 +1,61 @@
+def compare_poker_hands(hand1, hand2):
+    # 定义牌的权值
+    card_values = {
+        '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
+        'J': 11, 'Q': 12, 'K': 13, 'A': 14, '2': 15, 'joker': 16, 'JOKER': 17
+    }
+    
+    # 分别得到牌型中的牌
+    cards1 = hand1.split()
+    cards2 = hand2.split()
+    
+    # 牌的数量
+    len1, len2 = len(cards1), len(cards2)
+    
+    # 确定牌型类型
+    def get_hand_types(cards, card_length):
+        if card_length == 1:
+            return 'single'
+        elif card_length == 2:
+            if cards[0] == 'joker' and cards[1] == 'JOKER':
+                return 'joker_pair'
+            else:
+                return 'pair'
+        elif card_length == 3:
+            return 'triple'
+        elif card_length == 4:
+            return 'bomb'
+        elif card_length == 5:
+            return 'straight'
+    
+    type1 = get_hand_types(cards1, len1)
+    type2 = get_hand_types(cards2, len2)
+    
+    # 比较牌型
+    if type1 == type2:
+        max_card1 = max(cards1, key=lambda card: card_values[card])
+        max_card2 = max(cards2, key=lambda card: card_values[card])
+        return hand1 if card_values[max_card1] > card_values[max_card2] else hand2
+    elif type1 == 'joker_pair' or type2 == 'joker_pair':
+        return hand1 if type1 == 'joker_pair' else hand2
+    elif type1 == 'bomb' or type2 == 'bomb':
+        if type1 == 'bomb' and type2 != 'bomb':
+            return hand1
+        elif type2 == 'bomb' and type1 != 'bomb':
+            return hand2
+        else:
+            max_card1 = max(cards1, key=lambda card: card_values[card])
+            max_card2 = max(cards2, key=lambda card: card_values[card])
+            return hand1 if card_values[max_card1] > card_values[max_card2] else hand2
+    else:
+        return 'ERROR'
+
+# 从标准输入读取数据
+import sys
+input = sys.stdin.read().strip()
+hand1, hand2 = input.split('-')
+
+# 计算结果并输出
+result = compare_poker_hands(hand1, hand2)
+print(result)
+
